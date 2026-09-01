@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BAYUN | Иностранный легион России</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+        <style>:root { /* Taiga UI inspired color palette */ --tui-primary: #00b0ff; --tui-primary-hover: #0096e6; --tui-primary-light: #e6f4ff; --tui-background: #ffffff; --tui-background-secondary: #f5f5f5; --tui-background-elevated: #ffffff; --tui-text-primary: #000000; --tui-text-secondary: #666666; --tui-text-tertiary: #999999; --tui-border: #e0e0e0; --tui-border-hover: #b0b0b0; --tui-accent-gold: #ffb300; --tui-accent-gold-hover: #ff9800; --tui-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); --tui-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12); --tui-radius: 8px; --tui-radius-lg: 12px; } * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; } body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--tui-text-primary); line-height: 1.6; background-color: var(--tui-background); -webkit-font-smoothing: antialiased; } /* Navigation - Taiga UI style */nav { position: fixed; top: 0; width: 100%; background: var(--tui-background); border-bottom: 1px solid var(--tui-border); z-index: 1000; transition: all 0.3s ease; } .nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; } .logo { font-size: 1.5rem; font-weight: 700; color: var(--tui-text-primary); display: flex; align-items: center; gap: 0.75rem; letter-spacing: -0.3px; } .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--tui-accent-gold) 0%, #ff9800 100%); border-radius: var(--tui-radius); display: flex; align-items: center; justify-content: center; } .logo-icon .material-icons-round { font-size: 24px; color: white; } .logo img { height: 40px; width: auto; object-fit: contain; } .nav-links { display: flex; gap: 2rem; list-style: none; } .nav-links a { text-decoration: none; color: var(--tui-text-secondary); font-weight: 500; font-size: 0.95rem; transition: color 0.2s; position: relative; } .nav-links a:hover { color: var(--tui-primary); } .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.5rem; border-radius: var(--tui-radius); font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; } .btn-primary { background: var(--tui-primary); color: white; } .btn-primary:hover { background: var(--tui-primary-hover); box-shadow: var(--tui-shadow-hover); } .btn-accent { background: var(--tui-accent-gold); color: white; } .btn-accent:hover { background: var(--tui-accent-gold-hover); box-shadow: var(--tui-shadow-hover); } .btn-secondary { background: var(--tui-background-secondary); color: var(--tui-text-primary); border: 1px solid var(--tui-border); } .btn-secondary:hover { border-color: var(--tui-border-hover); box-shadow: var(--tui-shadow); } /* Hero Section */.hero { padding: 8rem 2rem 4rem; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 50%, #fff8e1 100%); } .hero-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; } .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--tui-primary-light); color: var(--tui-primary); border-radius: 20px; font-size: 0.85rem; font-weight: 500; margin-bottom: 1.5rem; } .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; } .hero h1 span { color: var(--tui-accent-gold); } .hero-subtitle { font-size: 1.2rem; color: var(--tui-text-secondary); margin-bottom: 2rem; max-width: 500px; } .hero-buttons { display: flex; gap: 1rem; margin-bottom: 3rem; } .hero-stats { display: flex; gap: 3rem; } .stat { display: flex; flex-direction: column; } .stat-value { font-size: 2rem; font-weight: 700; color: var(--tui-text-primary); } .stat-label { font-size: 0.85rem; color: var(--tui-text-tertiary); } /* Hero Card */.hero-image { display: flex; justify-content: flex-end; } .hero-card { background: white; border-radius: var(--tui-radius-lg); box-shadow: var(--tui-shadow); overflow: hidden; max-width: 480px; } .hero-image-main { width: 100%; height: 240px; object-fit: cover; } .hero-card-content { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; } .hero-card-item { display: flex; align-items: flex-start; gap: 1rem; } .card-icon { width: 40px; height: 40px; background: var(--tui-primary-light); border-radius: var(--tui-radius); display: flex; align-items: center; justify-content: center; flex-shrink: 0; } .card-icon .material-icons-round { font-size: 20px; color: var(--tui-primary); } .card-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; } .card-text p { font-size: 0.85rem; color: var(--tui-text-secondary); } /* Sections */.section { padding: 5rem 2rem; } .section-gray { background: var(--tui-background-secondary); } .container { max-width: 1200px; margin: 0 auto; } .section-header { text-align: center; margin-bottom: 3rem; } .section-tag { display: inline-block; padding: 0.5rem 1rem; background: var(--tui-primary-light); color: var(--tui-primary); border-radius: 20px; font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem; } .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.5px; } .section-subtitle { font-size: 1.1rem; color: var(--tui-text-secondary); max-width: 600px; margin: 0 auto; } /* Features Grid */.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } .feature-card { background: white; border-radius: var(--tui-radius-lg); overflow: hidden; box-shadow: var(--tui-shadow); transition: all 0.3s ease; } .feature-card:hover { box-shadow: var(--tui-shadow-hover); transform: translateY(-4px); } .feature-image { width: 100%; height: 180px; object-fit: cover; } .feature-content { padding: 1.5rem; } .feature-icon-wrapper { width: 48px; height: 48px; background: var(--tui-primary-light); border-radius: var(--tui-radius); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; } .feature-icon-wrapper .material-icons-round { font-size: 24px; color: var(--tui-primary); } .feature-content h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; } .feature-content p { font-size: 0.9rem; color: var(--tui-text-secondary); line-height: 1.5; } /* Benefits Grid */.benefits-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } .benefit-card { background: white; border-radius: var(--tui-radius-lg); padding: 2rem; box-shadow: var(--tui-shadow); transition: all 0.3s ease; position: relative; } .benefit-card:hover { box-shadow: var(--tui-shadow-hover); } .benefit-number { font-size: 3rem; font-weight: 800; color: var(--tui-primary-light); position: absolute; top: 1rem; right: 1.5rem; } .benefit-card h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; } .benefit-card p { font-size: 0.95rem; color: var(--tui-text-secondary); } .highlight { color: var(--tui-accent-gold); font-weight: 600; } /* Banner Quote */.banner-quote { background: linear-gradient(135deg, var(--tui-primary) 0%, #0096e6 100%); padding: 4rem 2rem; text-align: center; } .banner-quote-content { max-width: 800px; margin: 0 auto; } .banner-quote p { font-size: 1.5rem; font-weight: 500; color: white; line-height: 1.6; } .banner-quote .highlight { color: var(--tui-accent-gold); } /* Timeline */.timeline { position: relative; padding: 2rem 0; } .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--tui-border); transform: translateX(-50%); } .timeline-item { position: relative; padding: 1.5rem 0; display: flex; align-items: flex-start; } .timeline-item:nth-child(odd) { justify-content: flex-start; padding-right: 55%; text-align: right; } .timeline-item:nth-child(even) { justify-content: flex-end; padding-left: 55%; text-align: left; } .timeline-number { position: absolute; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: var(--tui-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; z-index: 1; } .timeline-item h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; } .timeline-item p { font-size: 0.9rem; color: var(--tui-text-secondary); } /* FAQ */.faq-grid { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; } .faq-item { background: white; border-radius: var(--tui-radius-lg); box-shadow: var(--tui-shadow); overflow: hidden; } .faq-question { width: 100%; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; background: none; border: none; cursor: pointer; text-align: left; } .faq-question h3 { font-size: 1rem; font-weight: 600; flex: 1; } .faq-icon { width: 32px; height: 32px; background: var(--tui-background-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; } .faq-item.active .faq-icon { transform: rotate(180deg); } .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; } .faq-item.active .faq-answer { max-height: 300px; } .faq-answer-content { padding: 0 1.5rem 1.25rem; font-size: 0.95rem; color: var(--tui-text-secondary); line-height: 1.6; } /* CTA Section */.cta-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 5rem 2rem; text-align: center; } .cta-content { max-width: 600px; margin: 0 auto; } .cta-section h2 { font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 1rem; } .cta-section p { font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem; } .btn-large { padding: 1rem 2rem; font-size: 1.1rem; } /* Footer */footer { background: var(--tui-background-secondary); padding: 3rem 2rem 1.5rem; border-top: 1px solid var(--tui-border); } .footer-content { max-width: 1200px; margin: 0 auto; text-align: center; } .footer-text { font-size: 0.9rem; color: var(--tui-text-secondary); margin-bottom: 0.5rem; } .footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1.5rem 0; flex-wrap: wrap; } .footer-links a { text-decoration: none; color: var(--tui-text-secondary); font-size: 0.9rem; transition: color 0.2s; } .footer-links a:hover { color: var(--tui-primary); } .footer-bottom { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--tui-border); } .footer-bottom p { font-size: 0.85rem; color: var(--tui-text-tertiary); } /* Scroll Reveal */.scroll-reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; } .scroll-reveal.active { opacity: 1; transform: translateY(0); } /* Responsive */@media (max-width: 1024px) { .hero-container { grid-template-columns: 1fr; gap: 3rem; } .hero-content { text-align: center; } .hero-subtitle { margin: 0 auto 2rem; } .hero-buttons { justify-content: center; } .hero-stats { justify-content: center; } .hero-image { justify-content: center; } .features-grid { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 768px) { .nav-links { display: none; } .hero h1 { font-size: 2.5rem; } .features-grid, .benefits-grid { grid-template-columns: 1fr; } .timeline::before { left: 20px; } .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { justify-content: flex-start; padding-left: 60px; padding-right: 0; text-align: left; } .timeline-number { left: 20px; } }</style>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav id="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="images/Logo-bayun.png" alt="BAYUN Logo" style="height: 40px; width: auto;">
+                </div>
+                <ul class="nav-links">
+                    <li>
+                        <a href="#features">Специальности</a>
+                    </li>
+                    <li>
+                        <a href="#benefits">Преимущества</a>
+                    </li>
+                    <li>
+                        <a href="#process">Процесс</a>
+                    </li>
+                    <li>
+                        <a href="#faq">Вопросы</a>
+                    </li>
+                    <li>
+                        <a href="#contact">Контакты</a>
+                    </li>
+                </ul>
+                <a href="#contact" class="btn">Подать заявку</a>
+            </div>
+        </nav>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="material-icons-round" style="font-size: 16px; vertical-align: middle;">verified_user</span>
+                        Государственная лицензия № L055-01259-77/00600974
+                    </div>
+                    <h1>Иностранный легион <span>BAYUN</span></h1>
+                    <p class="hero-subtitle">
+                    Уникальная возможность получить современное военную подготовку, 
+                    стабильный высокий доход и российское гражданство. </p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-accent">Начать сейчас</a>
+                        <a href="#features" class="btn btn-secondary">Узнать больше</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">$30K</span>
+                            <span class="stat-label">Единовременная выплата</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">$2.5K</span>
+                            <span class="stat-label">Ежемесячный доход</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">3 мес</span>
+                            <span class="stat-label">До гражданства</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card">
+                        <img src="images/badge.webp" alt="Обучение в БАЮН" class="hero-image-main">
+                        <div class="hero-card-content">
+                            <div class="hero-card-item">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">target</span>
+                                </div>
+                                <div class="card-text">
+                                    <h4>Современные специальности</h4>
+                                    <p>Операторы БПЛА, РЭБ, кибербезопасность и разведка</p>
+                                </div>
+                            </div>
+                            <div class="hero-card-item">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">school</span>
+                                </div>
+                                <div class="card-text">
+                                    <h4>Интенсивное обучение</h4>
+                                    <p>14 дней полной подготовки с экспертами</p>
+                                </div>
+                            </div>
+                            <div class="hero-card-item">
+                                <div class="card-icon">
+                                    <span class="material-icons-round">flight</span>
+                                </div>
+                                <div class="card-text">
+                                    <h4>Полное сопровождение</h4>
+                                    <p>Оплата перелета, трансфер и размещение</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Features Section -->
+        <section class="section section-gray" id="features">
+            <div class="container">
+                <div class="section-header scroll-reveal">
+                    <span class="section-tag">Направления подготовки</span>
+                    <h2 class="section-title">Современные военные специальности</h2>
+                    <p class="section-subtitle">
+                    BAYUN — это полный цикл подготовки специалистов для защиты критической инфраструктуры и безопасности </p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card scroll-reveal">
+                        <img alt="Оператор БПЛА" class="feature-image" width="0" src="images/tiporig.webp" height="0">
+                        <div class="feature-content">
+                            <div class="feature-icon-wrapper">
+                                <span class="material-icons-round">airplanemode_active</span>
+                            </div>
+                            <h3>Оператор БПЛА</h3>
+                            <p>Подготовка операторов беспилотных летательных аппаратов различных типов. Работа с современным оборудованием и системами наведения.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card scroll-reveal">
+                        <img src="images/drone_operator.w768-h424-c384_353.jpg" alt="РЭБ и радиоразведка" class="feature-image">
+                        <div class="feature-content">
+                            <div class="feature-icon-wrapper">
+                                <span class="material-icons-round">satellite</span>
+                            </div>
+                            <h3>РЭБ и радиоразведка</h3>
+                            <p>Специалисты по радиоэлектронной борьбе и электронной разведке. Работа с передовыми системами защиты и подавления.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card scroll-reveal">
+                        <img src="images/soldier_5.w400-h400-c241_279.jpg" alt="Cybersecurity" class="feature-image">
+                        <div class="feature-content">
+                            <div class="feature-icon-wrapper">
+                                <span class="material-icons-round">security</span>
+                            </div>
+                            <h3>Кибербезопасность</h3>
+                            <p>Защита информационных систем, сетевая безопасность, противодействие киберугрозам и защита критической инфраструктуры.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card scroll-reveal">
+                        <img src="images/soldier_4.w477-h266-c239_177.jpg" alt="Разведка и штурм" class="feature-image">
+                        <div class="feature-content">
+                            <div class="feature-icon-wrapper">
+                                <span class="material-icons-round">military_tech</span>
+                            </div>
+                            <h3>Разведка и штурм</h3>
+                            <p>Специальная подготовка разведывательных и штурмовых групп. Тактика, огневая подготовка, выживание в различных условиях.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card scroll-reveal">
+                        <img src="images/Баюн-рюкзак.jpg" alt="Инженерные войска" class="feature-image">
+                        <div class="feature-content">
+                            <div class="feature-icon-wrapper">
+                                <span class="material-icons-round">engineering</span>
+                            </div>
+                            <h3>Инженерные войска</h3>
+                            <p>Саперное дело, инженерная разведка, строительство укреплений и преодоление инженерных заграждений.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card scroll-reveal">
+                        <img src="images/soldier_6.w540-h462-c271_344.jpg" alt="Armored vehicles" class="feature-image">
+                        <div class="feature-content">
+                            <div class="feature-icon-wrapper">
+                                <span class="material-icons-round">directions_car</span>
+                            </div>
+                            <h3>Вождение бронетехники</h3>
+                            <p>Управление тяжелой бронированной техникой, вождение в сложных условиях, техническое обслуживание и ремонт.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Benefits Section -->
+        <section class="section" id="benefits">
+            <div class="container">
+                <div class="section-header scroll-reveal">
+                    <span class="section-tag">Почему мы</span>
+                    <h2 class="section-title">Ваши преимущества</h2>
+                    <p class="section-subtitle">
+                    Мы предлагаем лучшие условия для начала новой жизни в России </p>
+                </div>
+                <div class="benefits-grid">
+                    <div class="benefit-card scroll-reveal">
+                        <div class="benefit-number">01</div>
+                        <h3>Высокий доход</h3>
+                        <p>Единовременная выплата <span class="highlight">3 000 000 рублей ($35,000+)</span> при подписании контракта.</p>
+                    </div>
+                    <div class="benefit-card scroll-reveal">
+                        <div class="benefit-number">02</div>
+                        <h3>Стабильная зарплата</h3>
+                        <p>Ежемесячные выплаты от <span class="highlight">210 000 рублей ($2,500+)</span> на российскую банковскую карту.</p>
+                    </div>
+                    <div class="benefit-card scroll-reveal">
+                        <div class="benefit-number">03</div>
+                        <h3>Российское гражданство</h3>
+                        <p>Получение гражданства РФ через <span class="highlight">3 месяца</span> после подписания контракта (Указ №821).</p>
+                    </div>
+                    <div class="benefit-card scroll-reveal">
+                        <div class="benefit-number">04</div>
+                        <h3>Поддержка семьи</h3>
+                        <p>Возможность регулярно отправлять деньги близким и обеспечить их будущее.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Banner Quote -->
+        <section class="banner-quote">
+            <div class="banner-quote-content scroll-reveal">
+                <p>
+                Мы <span class="highlight">единственная организация в России</span>, которая обучает вас русскому языку 
+                и <span class="highlight">не берет деньги с вашего контракта</span>. </p>
+            </div>
+        </section>
+        <!-- Process Section -->
+        <section class="section section-gray" id="process">
+            <div class="container">
+                <div class="section-header scroll-reveal">
+                    <span class="section-tag">мы поможем вам приехать в Россию!</span>
+                    <h2 class="section-title">Путь в Россию</h2>
+                    <p class="section-subtitle">
+                    Мы берем на себя все организационные вопросы от заявки до прибытия </p>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item scroll-reveal">
+                        <div class="timeline-number">1</div>
+                        <h3>Подача заявки</h3>
+                        <p>Предоставление документов и результатов медицинских анализов (ВИЧ, гепатит)</p>
+                    </div>
+                    <div class="timeline-item scroll-reveal">
+                        <div class="timeline-number">2</div>
+                        <h3>Проверка</h3>
+                        <p>Проверка документов за 3-4 дня. Оформление визовой поддержки</p>
+                    </div>
+                    <div class="timeline-item scroll-reveal">
+                        <div class="timeline-number">3</div>
+                        <h3>Прилет</h3>
+                        <p>Оплата перелета. Встреча в аэропорту с именной табличкой</p>
+                    </div>
+                    <div class="timeline-item scroll-reveal">
+                        <div class="timeline-number">4</div>
+                        <h3>Трансфер</h3>
+                        <p>Доставка в учебный центр. Размещение в комфортабельных условиях</p>
+                    </div>
+                    <div class="timeline-item scroll-reveal">
+                        <div class="timeline-number">5</div>
+                        <h3>Обучение</h3>
+                        <p>14 дней подготовки: русский язык + военная специальность</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- FAQ Section -->
+        <section class="section" id="faq">
+            <div class="container">
+                <div class="section-header scroll-reveal">
+                    <span class="section-tag">Вопросы и ответы</span>
+                    <h2 class="section-title">Часто задаваемые вопросы</h2>
+                    <p class="section-subtitle">
+                    Ответы на популярные вопросы о поступлении и обучении </p>
+                </div>
+                <div class="faq-grid">
+                    <div class="faq-item scroll-reveal">
+                        <button class="faq-question">
+                            <h3>Где находятся учебные военные центры?</h3>
+                            <div class="faq-icon">
+                                <span class="material-icons-round">expand_more</span>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Учебные центры BAYUN расположены в Московской, Курской и Тюменской области Российской Федерации. Мы предоставляем комфортные условия проживания и обучения.
+</div>
+                        </div>
+                    </div>
+                    <div class="faq-item scroll-reveal">
+                        <button class="faq-question">
+                            <h3>Каковы цели учебного центра BAYUN?</h3>
+                            <div class="faq-icon">
+                                <span class="material-icons-round">expand_more</span>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Наша цель — обеспечить каждому кандидату специальную подготовку под руководством высококвалифицированных инструкторов, изучение русского языка и обретение уверенности в своих способностях при использовании специального оборудования.
+</div>
+                        </div>
+                    </div>
+                    <div class="faq-item scroll-reveal">
+                        <button class="faq-question">
+                            <h3>Какой распорядок дня в учебном центре?</h3>
+                            <div class="faq-icon">
+                                <span class="material-icons-round">expand_more</span>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Вы будете размещены в комфортабельных казармах (1-4 человека в комнате). Предусмотрено трехразовое питание, 4-5 часов ежедневного изучения русского языка и специальная подготовка по программе российских спецслужб.
+</div>
+                        </div>
+                    </div>
+                    <div class="faq-item scroll-reveal">
+                        <button class="faq-question">
+                            <h3>Когда я получу деньги?</h3>
+                            <div class="faq-icon">
+                                <span class="material-icons-round">expand_more</span>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                После подписания контракта вы отправляетесь в воинскую часть для зачисления и получения довольствия. Этот процесс занимает 3-5 дней. После подтверждения зачисления Министерство обороны РФ переводит 2 600 000 рублей на вашу российскую банковскую карту. Далее ежемесячно &#8212; от 210 000 рублей.
+</div>
+                        </div>
+                    </div>
+                    <div class="faq-item scroll-reveal">
+                        <button class="faq-question">
+                            <h3>Какие документы необходимо?</h3>
+                            <div class="faq-icon">
+                                <span class="material-icons-round">expand_more</span>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Необходимо предоставить результаты анализов на ВИЧ, гепатит и отсутствие запрещенных веществ, а также сканы паспорта. Мы проверим документы в течение 3-4 дней и начнем процесс оформления въезда в Россию.
+</div>
+                        </div>
+                    </div>
+                    <div class="faq-item scroll-reveal">
+                        <button class="faq-question">
+                            <h3>Помогаете ли вы с получением гражданства?</h3>
+                            <div class="faq-icon">
+                                <span class="material-icons-round">expand_more</span>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Да. Согласно Указу Президента РФ №821 от 5 ноября 2025 года, вы получаете российское гражданство через три месяца после подписания контракта и начала прохождения военной службы.
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CTA Section -->
+        <section class="cta-section" id="contact">
+            <div class="cta-content">
+                <h2>Готовы начать новую жизнь?</h2>
+                <p>
+                Присоединяйтесь к BAYUN сегодня. Возраст от 18 до 60 лет. 
+                Граждане всех стран мира приветствуются. </p>
+                <a href="mailto:info@cat-bayun.ru" class="btn btn-accent btn-large">Подать заявку сейчас</a>
+                <p style="margin-top: 2rem; font-size: 0.9rem; color: rgba(255,255,255,0.8);">
+                Или напишите нам напрямую: <a href="mailto:info@cat-bayun.ru" style="color: var(--tui-accent-gold); text-decoration: none; font-weight: 600;">info@cat-bayun.ru</a> </p>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <img src="images/Logo-bayun.png" alt="BAYUN" style="height: 50px; width: auto; margin-bottom: 1rem;">
+                <p class="footer-text">
+Международный консорциум по защите критической инфраструктуры и безопасности границ России. 
+</p>
+                <p class="footer-text">Государственная лицензия на образовательную деятельность&nbsp;Российского Иностранного легиона &laquo;БАЮН&raquo;
+&#8470; L055-01259-77/00600974 от 15.05.2001г.</p>
+                <div class="footer-links">
+                    <a href="#features">Программы обучения</a>
+                    <a href="#benefits">Преимущества</a>
+                    <a href="#faq">Вопросы и ответы</a>
+                    <a href="#contact">Контакты</a>
+                    <a href="#">Политика конфиденциальности</a>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2026 BAYUN. Все права защищены. Лицензия № L055-01259-77/00600974</p>
+                </div>
+            </div>
+        </footer>
+        <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+    </body>
+</html>

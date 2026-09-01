@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAYUN | Select Language</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        h1 span { color: #ffb300; }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 3rem;
+        }
+        .lang-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 3rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #ffb300;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(255,179,0,0.2);
+        }
+        .flag { font-size: 3rem; margin-bottom: 1rem; }
+        .lang-name { font-size: 1.3rem; font-weight: 600; color: white; }
+        .lang-native { font-size: 0.95rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span>BAYUN</span></h1>
+        <p class="subtitle">Select your language / Выберите язык</p>
+        <div class="lang-buttons">
+            <a href="en.html" class="lang-btn">
+                <div class="flag">🇬🇧</div>
+                <div class="lang-name">English</div>
+                <div class="lang-native">English version</div>
+            </a>
+            <a href="ru.html" class="lang-btn">
+                <div class="flag">🇷🇺</div>
+                <div class="lang-name">Русский</div>
+                <div class="lang-native">Русская версия</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
