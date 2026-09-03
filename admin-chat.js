@@ -45,10 +45,46 @@ const SupabaseAPI = {
 const AdminChat = {
     currentSession: null,
     pollInterval: null,
+    lastMessageCount: 0,
 
     async init() {
         await this.loadSessions();
         this.startPolling();
+    },
+
+    playNotificationSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 1000;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+            
+            setTimeout(() => {
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                osc2.connect(gain2);
+                gain2.connect(audioContext.destination);
+                osc2.frequency.value = 1200;
+                osc2.type = 'sine';
+                gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                osc2.start(audioContext.currentTime);
+                osc2.stop(audioContext.currentTime + 0.2);
+            }, 150);
+        } catch (e) {
+            console.log('Sound notification not available');
+        }
     },
 
     async loadSessions() {
@@ -60,7 +96,8 @@ const AdminChat = {
         }
 
         const list = document.getElementById('sessionsList');
-        document.getElementById('activeCount').textContent = data.filter(s => s.status === 'active').length;
+        const activeSessions = data.filter(s => s.status === 'active');
+        document.getElementById('activeCount').textContent = activeSessions.length;
 
         if (data.length === 0) {
             list.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">No conversations yet</div>';
@@ -76,6 +113,12 @@ const AdminChat = {
                 <span class="session-status status-${session.status}">${session.status}</span>
             </div>
         `).join('');
+
+        const newCount = activeSessions.length;
+        if (this.lastMessageCount > 0 && newCount > this.lastMessageCount) {
+            this.playNotificationSound();
+        }
+        this.lastMessageCount = newCount;
     },
 
     async selectSession(sessionId, clientName) {
@@ -103,6 +146,8 @@ const AdminChat = {
         }
 
         const messagesDiv = document.getElementById('chatMessages');
+        const previousCount = messagesDiv.querySelectorAll('.message').length;
+        
         messagesDiv.innerHTML = data.map(msg => `
             <div class="message ${msg.sender}">
                 <div class="message-bubble">${this.escapeHtml(msg.message)}</div>
@@ -111,6 +156,14 @@ const AdminChat = {
         `).join('');
 
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        if (data.length > previousCount && previousCount > 0) {
+            const newMessages = data.slice(previousCount);
+            const hasClientMessage = newMessages.some(msg => msg.sender === 'client');
+            if (hasClientMessage) {
+                this.playNotificationSound();
+            }
+        }
     },
 
     async sendMessage() {
