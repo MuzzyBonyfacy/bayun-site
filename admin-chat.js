@@ -1,12 +1,46 @@
 const SUPABASE_URL = 'https://aahxnfhpwqhosayxbmqj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_43t92RrUifHcfWSxqbpVIA_evczkniw';
 
-let supabase = null;
-if (window.supabase && window.supabase.createClient) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} else {
-    console.error('Supabase client not loaded');
-}
+const SupabaseAPI = {
+    async select(table, params = '') {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
+        return await response.json();
+    },
+
+    async insert(table, data) {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(data)
+        });
+        return await response.json();
+    },
+
+    async update(table, data, params) {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            },
+            body: JSON.stringify(data)
+        });
+        return await response.json();
+    }
+};
 
 const AdminChat = {
     currentSession: null,
@@ -18,13 +52,10 @@ const AdminChat = {
     },
 
     async loadSessions() {
-        const { data, error } = await supabase
-            .from('chat_sessions')
-            .select('*')
-            .order('updated_at', { ascending: false });
+        const data = await SupabaseAPI.select('chat_sessions', 'order=updated_at.desc');
 
-        if (error) {
-            console.error('Error loading sessions:', error);
+        if (!data || data.error) {
+            console.error('Error loading sessions:', data);
             return;
         }
 
@@ -62,14 +93,12 @@ const AdminChat = {
     async loadMessages() {
         if (!this.currentSession) return;
 
-        const { data, error } = await supabase
-            .from('chat_messages')
-            .select('*')
-            .eq('session_id', this.currentSession)
-            .order('created_at', { ascending: true });
+        const data = await SupabaseAPI.select('chat_messages', 
+            `session_id=eq.${this.currentSession}&order=created_at.asc`
+        );
 
-        if (error) {
-            console.error('Error loading messages:', error);
+        if (!data || data.error) {
+            console.error('Error loading messages:', data);
             return;
         }
 
@@ -90,23 +119,21 @@ const AdminChat = {
 
         if (!message || !this.currentSession) return;
 
-        const { error } = await supabase
-            .from('chat_messages')
-            .insert({
-                session_id: this.currentSession,
-                sender: 'manager',
-                message: message
-            });
+        const result = await SupabaseAPI.insert('chat_messages', {
+            session_id: this.currentSession,
+            sender: 'manager',
+            message: message
+        });
 
-        if (error) {
-            console.error('Error sending message:', error);
+        if (result && result.error) {
+            console.error('Error sending message:', result);
             return;
         }
 
-        await supabase
-            .from('chat_sessions')
-            .update({ updated_at: new Date().toISOString() })
-            .eq('session_id', this.currentSession);
+        await SupabaseAPI.update('chat_sessions', 
+            { updated_at: new Date().toISOString() },
+            `session_id=eq.${this.currentSession}`
+        );
 
         input.value = '';
         await this.loadMessages();

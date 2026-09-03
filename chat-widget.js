@@ -122,86 +122,80 @@ const ChatWidget = {
     },
 
     async saveSession(name) {
-        console.log('saveSession called, supabase:', !!supabase);
-        if (!supabase) {
-            console.error('Supabase not initialized');
-            return;
-        }
-        
-        console.log('Upserting session...');
-        const { data, error } = await supabase
-            .from('chat_sessions')
-            .upsert({
+        console.log('saveSession called');
+        try {
+            console.log('Upserting session...');
+            const result = await SupabaseAPI.upsert('chat_sessions', {
                 session_id: this.sessionId,
                 client_name: name,
                 status: 'active'
-            }, { onConflict: 'session_id' });
-        
-        console.log('saveSession result:', { data, error });
+            }, 'session_id');
+            
+            console.log('saveSession result:', result);
+            return result;
+        } catch (error) {
+            console.error('saveSession error:', error);
+        }
     },
 
     async saveMessage(message, sender) {
-        console.log('saveMessage called, supabase:', !!supabase);
-        if (!supabase) {
-            console.error('Supabase not initialized');
-            return;
-        }
-        
-        console.log('Inserting message...');
-        const { data, error } = await supabase
-            .from('chat_messages')
-            .insert({
+        console.log('saveMessage called');
+        try {
+            console.log('Inserting message...');
+            const result = await SupabaseAPI.insert('chat_messages', {
                 session_id: this.sessionId,
                 sender: sender,
                 message: message
             });
-        
-        console.log('saveMessage result:', { data, error });
+            
+            console.log('saveMessage result:', result);
+            return result;
+        } catch (error) {
+            console.error('saveMessage error:', error);
+        }
     },
 
     async loadMessages() {
-        if (!supabase) {
-            console.error('Supabase not initialized for loadMessages');
-            return;
-        }
-        
-        console.log('Loading messages for session:', this.sessionId);
-        const { data, error } = await supabase
-            .from('chat_messages')
-            .select('*')
-            .eq('session_id', this.sessionId)
-            .order('created_at', { ascending: true });
+        try {
+            console.log('Loading messages for session:', this.sessionId);
+            const result = await SupabaseAPI.select('chat_messages', 
+                `session_id=eq.${this.sessionId}&order=created_at.asc`
+            );
+            
+            console.log('loadMessages result:', result);
 
-        console.log('loadMessages result:', { data, error });
-
-        if (data && data.length > 0) {
-            const messagesDiv = document.getElementById('chatMessages');
-            messagesDiv.innerHTML = '';
-            data.forEach(msg => {
-                this.addMessage(msg.message, msg.sender, false);
-            });
+            if (result && result.length > 0) {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.innerHTML = '';
+                result.forEach(msg => {
+                    this.addMessage(msg.message, msg.sender, false);
+                });
+            }
+        } catch (error) {
+            console.error('loadMessages error:', error);
         }
     },
 
     async pollMessages() {
-        if (!supabase || !this.isOpen) return;
+        if (!this.isOpen) return;
         
-        const { data, error } = await supabase
-            .from('chat_messages')
-            .select('*')
-            .eq('session_id', this.sessionId)
-            .eq('sender', 'manager')
-            .order('created_at', { ascending: true });
+        try {
+            const result = await SupabaseAPI.select('chat_messages', 
+                `session_id=eq.${this.sessionId}&sender=eq.manager&order=created_at.asc`
+            );
 
-        if (data) {
-            const messagesDiv = document.getElementById('chatMessages');
-            const existingCount = messagesDiv.querySelectorAll('.chat-message.manager').length;
-            
-            if (data.length > existingCount) {
-                data.slice(existingCount).forEach(msg => {
-                    this.addMessage(msg.message, 'manager', false);
-                });
+            if (result) {
+                const messagesDiv = document.getElementById('chatMessages');
+                const existingCount = messagesDiv.querySelectorAll('.chat-message.manager').length;
+                
+                if (result.length > existingCount) {
+                    result.slice(existingCount).forEach(msg => {
+                        this.addMessage(msg.message, 'manager', false);
+                    });
+                }
             }
+        } catch (error) {
+            console.error('pollMessages error:', error);
         }
     },
 
