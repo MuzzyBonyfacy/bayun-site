@@ -10,6 +10,7 @@ const ChatWidget = {
         this.createWidget();
         this.bindEvents();
         this.loadMessages();
+        this.startBackgroundPolling();
     },
 
     createWidget() {
@@ -70,6 +71,14 @@ const ChatWidget = {
             </button>
         `;
         document.body.appendChild(widget);
+        
+        // Add notification badge
+        const chatBtn = document.getElementById('chatButton');
+        const badge = document.createElement('div');
+        badge.className = 'notification-badge';
+        badge.id = 'notificationBadge';
+        badge.textContent = '0';
+        chatBtn.appendChild(badge);
     },
 
     bindEvents() {
@@ -86,6 +95,7 @@ const ChatWidget = {
         document.getElementById('chatWindow').classList.toggle('active', this.isOpen);
         if (this.isOpen) {
             this.startPolling();
+            this.hideNotification();
         } else {
             this.stopPolling();
         }
@@ -189,13 +199,58 @@ const ChatWidget = {
                 const existingCount = messagesDiv.querySelectorAll('.chat-message.manager').length;
                 
                 if (result.length > existingCount) {
-                    result.slice(existingCount).forEach(msg => {
+                    const newMessages = result.slice(existingCount);
+                    newMessages.forEach(msg => {
                         this.addMessage(msg.message, 'manager', false);
                     });
+                    this.showNotification(newMessages.length);
                 }
             }
         } catch (error) {
             console.error('pollMessages error:', error);
+        }
+    },
+
+    showNotification(count) {
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            badge.textContent = count;
+            badge.style.display = 'flex';
+        }
+        this.playNotificationSound();
+    },
+
+    hideNotification() {
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            badge.style.display = 'none';
+        }
+    },
+
+    startBackgroundPolling() {
+        setInterval(() => {
+            if (!this.isOpen) {
+                this.pollForNotifications();
+            }
+        }, 5000);
+    },
+
+    async pollForNotifications() {
+        try {
+            const result = await SupabaseAPI.select('chat_messages', 
+                `session_id=eq.${this.sessionId}&sender=eq.manager&order=created_at.asc`
+            );
+
+            if (result && result.length > 0) {
+                const lastShown = parseInt(localStorage.getItem('chat_last_shown') || '0');
+                const newCount = result.filter(msg => new Date(msg.created_at).getTime() > lastShown).length;
+                
+                if (newCount > 0) {
+                    this.showNotification(newCount);
+                }
+            }
+        } catch (error) {
+            // Silent fail for background polling
         }
     },
 
@@ -211,6 +266,28 @@ const ChatWidget = {
         }
     },
 
+    playNotificationSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch (e) {
+            console.log('Sound notification not available');
+        }
+    },
+
     addMessage(text, type, scroll = true) {
         const messages = document.getElementById('chatMessages');
         const div = document.createElement('div');
@@ -223,6 +300,7 @@ const ChatWidget = {
         if (scroll) {
             messages.scrollTop = messages.scrollHeight;
         }
+        localStorage.setItem('chat_last_shown', Date.now().toString());
     },
 
     escapeHtml(text) {
