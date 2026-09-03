@@ -5,6 +5,7 @@ const ChatWidget = {
     pollInterval: null,
 
     init() {
+        console.log('ChatWidget init, sessionId:', this.sessionId);
         localStorage.setItem('chat_session_id', this.sessionId);
         this.createWidget();
         this.bindEvents();
@@ -110,6 +111,8 @@ const ChatWidget = {
 
         if (!message) return;
 
+        console.log('Sending message:', { name, message, sessionId: this.sessionId });
+
         nameInput.style.borderColor = '#e0e0e0';
         this.addMessage(message, 'client');
         input.value = '';
@@ -119,37 +122,57 @@ const ChatWidget = {
     },
 
     async saveSession(name) {
-        if (!supabase) return;
+        console.log('saveSession called, supabase:', !!supabase);
+        if (!supabase) {
+            console.error('Supabase not initialized');
+            return;
+        }
         
-        const { error } = await supabase
+        console.log('Upserting session...');
+        const { data, error } = await supabase
             .from('chat_sessions')
             .upsert({
                 session_id: this.sessionId,
                 client_name: name,
                 status: 'active'
             }, { onConflict: 'session_id' });
+        
+        console.log('saveSession result:', { data, error });
     },
 
     async saveMessage(message, sender) {
-        if (!supabase) return;
+        console.log('saveMessage called, supabase:', !!supabase);
+        if (!supabase) {
+            console.error('Supabase not initialized');
+            return;
+        }
         
-        const { error } = await supabase
+        console.log('Inserting message...');
+        const { data, error } = await supabase
             .from('chat_messages')
             .insert({
                 session_id: this.sessionId,
                 sender: sender,
                 message: message
             });
+        
+        console.log('saveMessage result:', { data, error });
     },
 
     async loadMessages() {
-        if (!supabase) return;
+        if (!supabase) {
+            console.error('Supabase not initialized for loadMessages');
+            return;
+        }
         
+        console.log('Loading messages for session:', this.sessionId);
         const { data, error } = await supabase
             .from('chat_messages')
             .select('*')
             .eq('session_id', this.sessionId)
             .order('created_at', { ascending: true });
+
+        console.log('loadMessages result:', { data, error });
 
         if (data && data.length > 0) {
             const messagesDiv = document.getElementById('chatMessages');
@@ -219,4 +242,7 @@ const ChatWidget = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => ChatWidget.init());
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing ChatWidget');
+    ChatWidget.init();
+});
