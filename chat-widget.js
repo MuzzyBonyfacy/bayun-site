@@ -107,6 +107,13 @@ const ChatWidget = {
         this.stopPolling();
     },
 
+    open() {
+        this.isOpen = true;
+        document.getElementById('chatWindow').classList.add('active');
+        this.startPolling();
+        this.hideNotification();
+    },
+
     async send() {
         const nameInput = document.getElementById('chatName');
         const input = document.getElementById('chatInput');
@@ -318,3 +325,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing ChatWidget');
     ChatWidget.init();
 });
+
+function openChatWithGreeting() {
+    ChatWidget.open();
+    setTimeout(() => {
+        const input = document.getElementById('chatInput');
+        if (input) {
+            input.focus();
+        }
+    }, 300);
+}
